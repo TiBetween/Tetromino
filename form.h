@@ -22,8 +22,6 @@ class Form : public QWidget
 public:
     explicit Form(QWidget *parent = nullptr);
     ~Form();
-
-    void myshow();
 private slots:
 
 

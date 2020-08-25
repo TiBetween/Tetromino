@@ -8,7 +8,6 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent)
     int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
 
-    QLabel *Space = new QLabel(tr("<font color = white> </font>"));
     tetrisBox = new TetrisBox;
     nextTetrisBox = new NextTetrisBox;
     nextTetrisLabel = new QLabel(tr("<font color = white>NEXT：</font>"));
@@ -175,9 +174,9 @@ void mymain::keyPressEvent(QKeyEvent *event)
             }
             else
             {
-                QMediaPlayer *effect = new QMediaPlayer;
-                effect->setMedia(QUrl::fromLocalFile("C:\\Users\\10852\\Desktop\\WorkSpace\\Qt\\Tetromino\\game_over.mp3"));
-                effect->play();
+                //                QMediaPlayer *effect = new QMediaPlayer;
+                //                effect->setMedia(QUrl::fromLocalFile("C:\\Users\\10852\\Desktop\\WorkSpace\\Qt\\Tetromino\\game_over.mp3"));
+                //                effect->play();
                 //计时器停止
                 timer->stop();
                 //输出结束提示
@@ -247,7 +246,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
         }
     }
     //J键-游戏暂停
-    else if (event->key() == Qt::Key_J)
+    else if (event->key() == Qt::Key_P)
     {
         //需要游戏状态为：正常进行
         if (status == STATUS_ON)
@@ -264,17 +263,32 @@ void mymain::keyPressEvent(QKeyEvent *event)
     //C键-重新开始游戏
     else if (event->key() == Qt::Key_C)
     {
-        QMessageBox *box=new QMessageBox();
-        box->setText("确定要重新开始吗？您的分数将会清零");
-        timer->stop();
-        box->setStandardButtons(QMessageBox::No|QMessageBox::Yes);
-        if(box->exec()==QMessageBox::No)
+        if(status==STATUS_ON||status==STATUS_PAUSE)
         {
-            if(status==STATUS_ON)
+            timer->stop();
+            QMessageBox::StandardButton result=QMessageBox::question(this, "确认", "确认要重新开始游戏吗，您的分数不会被记录",
+                                                                     QMessageBox::Yes|QMessageBox::No |QMessageBox::Cancel,
+                                                                     QMessageBox::No);
+
+
+            if(result==QMessageBox::No||result==QMessageBox::Cancel)
             {
-                timer->start(500);
+                if(status==STATUS_ON)
+                {
+                    timer->start(speed);
+                    return;
+                }
+
             }
-            return;
+            else
+            {
+                tetris.clear();
+                tetrisBox->updateTetris(tetris);
+                nextTetrisBox->updateNextTetris(tetris);
+                updateScore();
+                status = STATUS_OFF;
+                setWindowTitle(tr("Tetromino - OFF"));
+            }
         }
         else
         {
@@ -284,36 +298,66 @@ void mymain::keyPressEvent(QKeyEvent *event)
             updateScore();
             status = STATUS_OFF;
             setWindowTitle(tr("Tetromino - OFF"));
+
         }
 
     }
     //M键-关闭游戏
     else if (event->key() == Qt::Key_M)
     {
-        QMessageBox *box=new QMessageBox();
-        box->setText("确定要关闭游戏吗？您的分数将不会被记录");
         timer->stop();
-        box->setStandardButtons(QMessageBox::No|QMessageBox::Yes);
-        if(box->exec()==QMessageBox::No)
+        if(status==STATUS_ON||status==STATUS_PAUSE)
         {
-            if(status==STATUS_ON)
+            QMessageBox::StandardButton result=QMessageBox::question(this, "确认", "确认要关闭游戏吗?您的分数将不会被记录",
+                                                                     QMessageBox::Yes|QMessageBox::No |QMessageBox::Cancel,
+                                                                     QMessageBox::No);
+            if(result==QMessageBox::No||result==QMessageBox::Cancel)
             {
-                timer->start(500);
+                if(status==STATUS_ON)
+                {
+                    timer->start(speed);
+                    return;
+                }
             }
-            return;
+            else
+            {
+                //            record();
+                status = STATUS_OFF;
+                QString str;
+                int score = tetris.getScore();
+                str += QString("%1").arg(score);
+                QMessageBox *myclose=new QMessageBox();
+                myclose->setWindowTitle("游戏结束");
+                myclose->setText("您的分数为:"+str);
+                //            record();
+                tetris.clear();
+                tetrisBox->updateTetris(tetris);
+                nextTetrisBox->updateNextTetris(tetris);
+                updateScore();
+                setWindowTitle(tr("Tetromino - OFF"));
+                myclose->exec();
+            }
+
         }
+
         else
         {
+            //            record();
+            status = STATUS_OFF;
             QString str;
             int score = tetris.getScore();
             str += QString("%1").arg(score);
             QMessageBox *myclose=new QMessageBox();
             myclose->setWindowTitle("游戏结束");
-            myclose->setText("您的分数为:"+str);
-            myclose->exec();
-            close();
-        }
 
+            //            record();
+            tetris.clear();
+            tetrisBox->updateTetris(tetris);
+            nextTetrisBox->updateNextTetris(tetris);
+            updateScore();
+            setWindowTitle(tr("Tetromino - OFF"));
+            myclose->exec();
+        }
     }
 
 }
@@ -384,5 +428,35 @@ void mymain::changeEvent(QEvent *event)
             setWindowTitle("Tetromino - PAUSE");
         }
 
+    }
+}
+
+void mymain::closeEvent(QCloseEvent *event)
+{
+    if(status==STATUS_ON||status==STATUS_PAUSE)
+    {
+        timer->stop();
+        QMessageBox::StandardButton result=QMessageBox::question(this, "确认", "确认要退出游戏吗，您的分数不会被记录",
+                                                                 QMessageBox::Yes|QMessageBox::No |QMessageBox::Cancel,
+                                                                 QMessageBox::No);
+
+        if (result==QMessageBox::Yes)
+        {
+            tetris.clear();
+            tetrisBox->updateTetris(tetris);
+            nextTetrisBox->updateNextTetris(tetris);
+            updateScore();
+            status = STATUS_OFF;
+            setWindowTitle(tr("Tetromino - OFF"));
+            event->accept();
+        }
+        else
+        {
+            if(status==STATUS_ON)
+            {
+                timer->start();
+            }
+            event->ignore();
+        }
     }
 }

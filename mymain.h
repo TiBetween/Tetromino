@@ -35,7 +35,7 @@ public:
     ~mymain();
     void keyPressEvent(QKeyEvent *event);   //响应键盘事件
     void changeEvent(QEvent *event);        //窗口最小化后暂停
-//    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event);
     void updateScore();                     //更新分数的数据和显示
     void setTimer();                        //设置计时器，方便加速
 public slots:
