@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>sound/game_over.mp3</file>
+        <file>sound/so_good.mp3</file>
+        <file>img/background.jpg</file>
+        <file>img/background.png</file>
+        <file>img/game_bg.png</file>
+        <file>img/main_bg.png</file>
+        <file>img/title.png</file>
+        <file>font/8bit.ttf</file>
+    </qresource>
+</RCC>

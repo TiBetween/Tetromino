@@ -1,53 +1,82 @@
 #include "mymain.h"
 #include <QMediaPlayer>
+#include <QFontDatabase>
 
 mymain::mymain(QWidget *parent) : QMainWindow(parent)
 {
 
+    int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
+    QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
+
+    QLabel *Space = new QLabel(tr("<font color = white> </font>"));
     tetrisBox = new TetrisBox;
     nextTetrisBox = new NextTetrisBox;
-    nextTetrisLabel = new QLabel(tr("下一个："));
-    controlLabel = new QLabel(tr("控制："));
-    w_controlLabel = new QLabel(tr("W-旋转"));
-    s_controlLabel = new QLabel(tr("S-向下移动"));
-    a_controlLabel = new QLabel(tr("A-向左移动"));
-    d_controlLabel = new QLabel(tr("D-向右移动"));
-    h_controlLabel = new QLabel(tr("H-开始"));
-    j_controlLabel = new QLabel(tr("J-暂停"));
-    c_controlLabel = new QLabel(tr("C-重新开始"));
-    m_controlLabel = new QLabel(tr("M-结束游戏"));
-    spaceLabel = new QLabel(tr("Space-快速下落"));
-    scoreTitleLabel = new QLabel(tr("得分："));
-    scoreLabel = new QLabel(tr("0"));
+    nextTetrisLabel = new QLabel(tr("<font color = white>NEXT：</font>"));
+    controlLabel = new QLabel(tr("<font color = white>CONTROL：</font>"));
+    w_controlLabel = new QLabel(tr("<font color = white>W-ROTATE</font>"));
+    s_controlLabel = new QLabel(tr("<font color = white>S-DOWN</font>"));
+    a_controlLabel = new QLabel(tr("<font color = white>A-UP</font>"));
+    d_controlLabel = new QLabel(tr("<font color = white>D-RIGHT</font>"));
+    h_controlLabel = new QLabel(tr("<font color = white>H-START</font>"));
+    j_controlLabel = new QLabel(tr("<font color = white>J-PAUSE</font>"));
+    c_controlLabel = new QLabel(tr("<font color = white>R-RESTART</font>"));
+    m_controlLabel = new QLabel(tr("<font color = white>M-END</font>"));
+    spaceLabel = new QLabel(tr("<font color = white>Space-SKIP</font>"));
+    scoreTitleLabel = new QLabel(tr("<font color = white>SCORE：</font>"));
+    scoreLabel = new QLabel(tr("<font color = white>0</font>"));
+    QFont font("Microsoft YaHei", 15, 75);
+    font.setFamily(fontFamilies.at(0));
+
+    nextTetrisLabel->setFont(font);
+    controlLabel->setFont(font);
+    w_controlLabel->setFont(font);
+    s_controlLabel->setFont(font);
+    a_controlLabel->setFont(font);
+    d_controlLabel->setFont(font);
+    h_controlLabel->setFont(font);
+    j_controlLabel->setFont(font);
+    c_controlLabel->setFont(font);
+    m_controlLabel->setFont(font);
+    spaceLabel->setFont(font);
+    scoreTitleLabel->setFont(font);
+    scoreLabel->setFont(font);
+    Space->setFont(font);
+
+
+
     mainLayout = new QGridLayout;
     //设置mainLayout的水平和横向的间隔为20
-    mainLayout->setHorizontalSpacing(20);
+    mainLayout->setHorizontalSpacing(15);
     mainLayout->setVerticalSpacing(20);
     //设置mainLayout居中
     mainLayout->setAlignment(Qt::AlignCenter);
     //添加各个widget
-    mainLayout->addWidget(tetrisBox, 0, 0, 14, 1);
-    mainLayout->addWidget(nextTetrisLabel, 0, 1);
-    mainLayout->addWidget(nextTetrisBox, 1, 1, 1, 2);
-    mainLayout->addWidget(controlLabel, 5, 1);
-    mainLayout->addWidget(w_controlLabel, 6, 1);
-    mainLayout->addWidget(s_controlLabel, 6, 2);
-    mainLayout->addWidget(a_controlLabel, 7, 1);
-    mainLayout->addWidget(d_controlLabel, 7, 2);
-    mainLayout->addWidget(h_controlLabel, 8, 1);
-    mainLayout->addWidget(j_controlLabel, 8, 2);
-    mainLayout->addWidget(c_controlLabel, 9, 1);
-    mainLayout->addWidget(m_controlLabel, 9, 2);
-    mainLayout->addWidget(scoreTitleLabel, 12, 1);
-    mainLayout->addWidget(scoreLabel, 12, 2);
+
+    mainLayout->addWidget(nextTetrisLabel, 6, 3);
+    mainLayout->addWidget(nextTetrisBox, 7, 3, 1, 2);
+    mainLayout->addWidget(controlLabel, 0, 0, 1, 1);
+    mainLayout->addWidget(w_controlLabel, 0, 1, 1, 1);
+    mainLayout->addWidget(s_controlLabel, 1, 1, 1, 1);
+    mainLayout->addWidget(a_controlLabel, 1, 0, 1, 1);
+    mainLayout->addWidget(d_controlLabel, 1, 2, 1, 1);
+    mainLayout->addWidget(c_controlLabel, 0, 2, 1, 1);
+    mainLayout->addWidget(spaceLabel, 0, 3, 1, 1);
+    mainLayout->addWidget(h_controlLabel, 0, 4, 1, 1);
+    mainLayout->addWidget(j_controlLabel, 1, 3, 1, 1);
+    mainLayout->addWidget(m_controlLabel, 1, 4, 1, 1);
+    mainLayout->addWidget(tetrisBox, 3, 1, 14, 2);
+//    mainLayout->addWidget(scoreTitleLabel, 12, 1);
+//    mainLayout->addWidget(scoreLabel, 12, 2);
 
 
     QWidget *widget = new QWidget(this);
     widget->setLayout(mainLayout);
     setCentralWidget(widget);
+    setWindowIcon(QIcon(":/res/img/title.png"));
 
-
-    setPalette(Qt::gray);
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Window,QBrush(QPixmap(":/res/img/game_bg.png")));
+    setPalette(pal);
 
     QDesktopWidget *desktopWidget = QApplication::desktop();
     int w = (desktopWidget->width() - this->width()) / 2;

@@ -245,14 +245,14 @@ void CTetromino::clear()
 //获得游戏窗口的宽度
 int CTetromino::getWidth()
 {
-    return MAXX * WIDTH + (MAXX - 1) * INTERVAL;
+    return MAXX * WIDTH + (MAXX - 1) * INTERVAL + BORDER*2;
 }
 
 
 //获得游戏窗口的高度
 int CTetromino::getHeight()
 {
-    return MAXY * HEIGHT + (MAXY - 1) * INTERVAL;
+    return MAXY * HEIGHT + (MAXY - 1) * INTERVAL+BORDER *2;
 }
 
 

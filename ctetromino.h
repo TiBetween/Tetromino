@@ -14,6 +14,7 @@
 #define HEIGHT 30   //单格的高度
 #define INTERVAL 4  //单格之间的间隔
 #define COUNT 4     //每个方块的格数
+#define BORDER 8
 
 //Block结构体：一个方块
 struct Block
@@ -62,7 +63,7 @@ private:
     int score;          //分数
     Block block;        //当前方块
     Block nextBlock;    //下一个方块
-    int box[MAXX][MAXY];//方格的坐标系 1表示右方格，0表示没有方格
+    int box[MAXX][MAXY];//方格的坐标系 1表示有方格，0表示没有方格
 
 
 };

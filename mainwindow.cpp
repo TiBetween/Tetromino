@@ -11,8 +11,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     this->setWindowTitle("俄罗斯方块");
-    this->setWindowIcon(QIcon("./images/title.png"));
-    this->setStyleSheet("border-image:url(./images/background.jpg);background-repeat:no-repeat;");
+    this->setWindowIcon(QIcon(":/res/img/title.png"));
+    QPalette pal;
+    QPixmap pixmap(":/res/img/background.jpg");
+    pal.setBrush(QPalette::Window,QBrush(pixmap));
+    setPalette(pal);
+    setAutoFillBackground(true);
 }
 
 

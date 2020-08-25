@@ -25,7 +25,9 @@ TetrisBox::TetrisBox(QWidget *parent) : QWidget(parent)
     int w = CTetromino::getWidth();
     int h = CTetromino::getHeight();
     setFixedSize(w, h);
-    setPalette(QPalette(Qt::black));
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Window,QBrush(QPixmap(":/res/img/main_bg.png")));
+    setPalette(pal);
     setAutoFillBackground(true);
 }
 
@@ -68,7 +70,7 @@ void TetrisBox::paintEvent(QPaintEvent *event)
                 int x = i * WIDTH + i * INTERVAL;
                 int y = j * HEIGHT + j * INTERVAL;
 
-                painter.drawRect(x, y, WIDTH, HEIGHT);
+                painter.drawRect(x + 7, y + 8, WIDTH, HEIGHT);
             }
         }
     }
@@ -79,6 +81,6 @@ void TetrisBox::paintEvent(QPaintEvent *event)
         int y = block.y[i];
         int x1 = x * WIDTH + x * INTERVAL;
         int y1 = y * HEIGHT + y * INTERVAL;
-        painter.drawRect(x1, y1, WIDTH, HEIGHT);
+        painter.drawRect(x1 + 7, y1 + 8, WIDTH, HEIGHT);
     }
 }
