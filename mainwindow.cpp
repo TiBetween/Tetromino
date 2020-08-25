@@ -10,6 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
+    this->setWindowTitle("俄罗斯方块");
+    this->setWindowIcon(QIcon("./images/title.png"));
+    this->setStyleSheet("border-image:url(./images/background.jpg);background-repeat:no-repeat;");
 }
 
 
