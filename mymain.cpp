@@ -24,6 +24,8 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent)
     spaceLabel = new QLabel(tr("<font color = white>Space-SKIP</font>"));
     scoreTitleLabel = new QLabel(tr("<font color = white>SCORE：</font>"));
     scoreLabel = new QLabel(tr("<font color = white>0</font>"));
+    diffTitleLabel = new QLabel(tr("<font color = white>DIFFICULTY:</font>"));
+    diffLabel = new QLabel(tr("<font color = white>0</font>"));
     QFont font("Microsoft YaHei", 15, 75);
     font.setFamily(fontFamilies.at(0));
 
@@ -40,7 +42,8 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent)
     spaceLabel->setFont(font);
     scoreTitleLabel->setFont(font);
     scoreLabel->setFont(font);
-    Space->setFont(font);
+    diffLabel->setFont(font);
+    diffTitleLabel->setFont(font);
 
 
 
@@ -65,9 +68,10 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent)
     mainLayout->addWidget(j_controlLabel, 1, 3, 1, 1);
     mainLayout->addWidget(m_controlLabel, 1, 4, 1, 1);
     mainLayout->addWidget(tetrisBox, 3, 1, 14, 2);
-//    mainLayout->addWidget(scoreTitleLabel, 12, 1);
-//    mainLayout->addWidget(scoreLabel, 12, 2);
-
+    mainLayout->addWidget(scoreTitleLabel, 12, 3);
+    mainLayout->addWidget(scoreLabel, 12, 4);
+    mainLayout->addWidget(diffTitleLabel, 13,3);
+    mainLayout->addWidget(diffLabel, 13, 4);
 
     QWidget *widget = new QWidget(this);
     widget->setLayout(mainLayout);
@@ -340,16 +344,27 @@ void mymain::onTimer()
 
 void mymain::updateScore()
 {
-    QString str;
+    QString str,strDiff;
     int score = tetris.getScore();
+    int diff = tetris.getDiff();
     str += QString("%1").arg(score);
+    strDiff += QString("%1").arg(diff);
     scoreLabel->setText(str);
     if(score>=nextStage&&speed>=100){
         nextStage+=100;
         speed-=50;
         setTimer();
     }
+    int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
+    QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
     scoreLabel->setText(str);
+    diffLabel->setText(strDiff);
+    QFont font("Microsoft YaHei", 15, 75);
+    font.setFamily(fontFamilies.at(0));
+    scoreLabel->setFont(font);
+    scoreLabel->setStyleSheet("QLabel{color:white;}");
+    diffLabel->setFont(font);
+    diffLabel->setStyleSheet("QLabel{color:white;}");
 }
 
 

@@ -30,10 +30,12 @@ class mymain : public QMainWindow
 {
     Q_OBJECT
 public:
+    void record();
     explicit mymain(QWidget *parent = nullptr);
     ~mymain();
     void keyPressEvent(QKeyEvent *event);   //响应键盘事件
     void changeEvent(QEvent *event);        //窗口最小化后暂停
+//    void closeEvent(QCloseEvent *event);
     void updateScore();                     //更新分数的数据和显示
     void setTimer();                        //设置计时器，方便加速
 public slots:
@@ -62,6 +64,8 @@ private:
     QLabel *spaceLabel;             //空格的标签
     QLabel *scoreTitleLabel;        //分数标题标签
     QLabel *scoreLabel;             //分数标签（用来显示分数）
+    QLabel *diffTitleLabel;
+    QLabel *diffLabel;
 
 signals:
 

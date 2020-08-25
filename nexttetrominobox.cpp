@@ -12,7 +12,8 @@ NextTetrisBox::NextTetrisBox(QWidget *parent) : QWidget(parent)
     nextBlock.centerX = -1;
     nextBlock.centerY = -1;
     nextBlock.ID = 0;
-
+    nextBlock.color = 10;
+    qDebug("color:%d", nextBlock.color);
     //设置本“下一个”窗口的宽度和高度
     //并设置背景为黑色
     int w = CTetromino::getNextWidth();
@@ -39,14 +40,35 @@ void NextTetrisBox::updateNextTetris(CTetromino tetris)
 void NextTetrisBox::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    QPen pen;
-    QBrush brush;
-    pen.setStyle(Qt::SolidLine);
-    pen.setColor(QColor(255, 255, 255));
-    brush.setStyle(Qt::SolidPattern);
-    brush.setColor(QColor(255, 255, 255));
-    painter.setPen(pen);
-    painter.setBrush(brush);
+    QPixmap pix;
+    painter.translate(0, 0);
+    switch (nextBlock.color) {
+    case 0:
+        pix.load(":/res/img/block_red.png");
+        break;
+    case 1:
+        pix.load(":/res/img/block_orange.png");
+        break;
+    case 2:
+        pix.load(":/res/img/block_yellow.png");
+        break;
+    case 3:
+        pix.load(":/res/img/block_green.png");
+        break;
+    case 4:
+        pix.load(":/res/img/block_blue.png");
+        break;
+    case 5:
+        pix.load(":/res/img/block_pink.png");
+        break;
+    case 6:
+        pix.load(":/res/img/block_purple.png");
+        break;
+    default:
+        pix.load(":/res/img/block_pink.png");
+        break;
+
+    }
 
     //绘制nextBlock中的内容
     for (int i = 0; i < COUNT; i++)
@@ -55,6 +77,6 @@ void NextTetrisBox::paintEvent(QPaintEvent *event)
         int y = nextBlock.y[i];
         int x1 = x * WIDTH + x * INTERVAL;
         int y1 = y * HEIGHT + y * INTERVAL;
-        painter.drawRect(x1, y1, WIDTH, HEIGHT);
+        painter.drawPixmap(x1, y1, WIDTH, HEIGHT,pix);
     }
 }

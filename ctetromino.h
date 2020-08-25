@@ -23,6 +23,7 @@ struct Block
     int y[COUNT];   //方块单格的y坐标
     int centerX;    //方块的中心x坐标
     int centerY;    //方块的中心y坐标
+    int color;
     int ID;         //方块的ID
 };
 
@@ -43,6 +44,7 @@ public:
     bool moveToEnd();               //移至底部
     bool isEnd();                   //判断是否结束
     void killLines();               //消去整行
+    int getDiff();
     void clear();                   //重新初始化
 
     static int getWidth();          //获得窗口的宽度
@@ -60,6 +62,7 @@ private:
     int getFirstFullLine();         //获得第一个整行
 
 private:
+    int diff;
     int score;          //分数
     Block block;        //当前方块
     Block nextBlock;    //下一个方块

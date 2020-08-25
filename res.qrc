@@ -8,5 +8,12 @@
         <file>img/main_bg.png</file>
         <file>img/title.png</file>
         <file>font/8bit.ttf</file>
+        <file>img/block_red.png</file>
+        <file>img/block_blue.png</file>
+        <file>img/block_green.png</file>
+        <file>img/block_orange.png</file>
+        <file>img/block_pink.png</file>
+        <file>img/block_purple.png</file>
+        <file>img/block_yellow.png</file>
     </qresource>
 </RCC>

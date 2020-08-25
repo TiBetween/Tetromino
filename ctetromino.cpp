@@ -7,6 +7,7 @@ CTetromino::CTetromino()
 
     //初始化成员变量
     score = 0;
+    diff = 0;
     for (int i = 0; i < MAXX; i++)
     {
         for (int j = 0; j < MAXY; j++)
@@ -42,7 +43,7 @@ void CTetromino::createBlock()
     block.centerX = nextBlock.centerX;
     block.centerY = nextBlock.centerY;
     block.ID = nextBlock.ID;
-
+    block.color = nextBlock.color;
     //创建下一个nextblock
     createNextBlock();
 }
@@ -120,6 +121,11 @@ bool CTetromino::moveToRight()
     }
 }
 
+int CTetromino::getDiff()
+{
+    return diff;
+}
+
 
 //将方块向下移动一格
 //成功返回true， 游戏结束返回false
@@ -187,7 +193,6 @@ bool CTetromino::isEnd()
     return false;
 }
 
-
 //消掉整行并进行分数奖励
 void CTetromino::killLines()
 {
@@ -213,6 +218,7 @@ void CTetromino::killLines()
     }
     //消行的分数奖励
     score += count * count * 10;
+    diff = score/100;
 }
 
 
@@ -292,6 +298,7 @@ void CTetromino::createNextBlock()
         nextBlock.centerX = 0;
         nextBlock.centerY = 0;
         nextBlock.ID = 0;
+        nextBlock.color = rand()%7;
         break;
     case 1:
         //####
@@ -307,6 +314,7 @@ void CTetromino::createNextBlock()
         nextBlock.centerX = centerX;
         nextBlock.centerY = -1;
         nextBlock.ID = 1;
+        nextBlock.color = rand()%7;
         break;
     case 2:
         //##
@@ -322,6 +330,7 @@ void CTetromino::createNextBlock()
         nextBlock.centerX = centerX;
         nextBlock.centerY = -2;
         nextBlock.ID = 2;
+        nextBlock.color = rand()%7;
         break;
     case 3:
         // ##
@@ -337,6 +346,7 @@ void CTetromino::createNextBlock()
         nextBlock.centerX = centerX;
         nextBlock.centerY = -2;
         nextBlock.ID = 3;
+        nextBlock.color = rand()%7;
         break;
     case 4:
         //#
@@ -352,6 +362,7 @@ void CTetromino::createNextBlock()
         nextBlock.centerX = centerX;
         nextBlock.centerY = -1;
         nextBlock.ID = 4;
+        nextBlock.color = rand()%7;
         break;
     case 5:
         //  #
@@ -367,6 +378,7 @@ void CTetromino::createNextBlock()
         nextBlock.centerX = centerX;
         nextBlock.centerY = -1;
         nextBlock.ID = 5;
+        nextBlock.color = rand()%7;
         break;
     case 6:
         // #
@@ -382,6 +394,7 @@ void CTetromino::createNextBlock()
         nextBlock.centerX = centerX;
         nextBlock.centerY = -1;
         nextBlock.ID = 6;
+        nextBlock.color = rand()%7;
         break;
     default:
         break;

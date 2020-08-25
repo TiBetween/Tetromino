@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QTextStream>
 #include <QtDebug>
+#include <QIcon>
 
 namespace Ui {
 class Form;

@@ -43,10 +43,10 @@
          </font>
         </property>
         <property name="autoFillBackground">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">color::rgb(255, 255,255)</string>
+         <string notr="true">QPushButton { background-color: rgb(255, 255, 255);border:0px solid ; color: rgb(0, 0, 0); } QPushButton:hover { color: rgb(245, 69, 234); }</string>
         </property>
         <property name="text">
          <string>开始游戏</string>
@@ -63,6 +63,9 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background-color: rgb(255, 255, 255);border:0px solid ; color: rgb(0, 0, 0); } QPushButton:hover { color: rgb(245, 69, 234); }</string>
+        </property>
         <property name="text">
          <string>排行榜</string>
         </property>
@@ -77,6 +80,9 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background-color: rgb(255, 255, 255);border:0px solid ; color: rgb(0, 0, 0); } QPushButton:hover { color: rgb(245, 69, 234); }</string>
         </property>
         <property name="text">
          <string>退出</string>
@@ -106,7 +112,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
