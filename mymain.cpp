@@ -312,7 +312,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
         pressedKeys.append(static_cast<Qt::Key>(event->key()));
         if(!repeatTimer->isActive())
         {
-            repeatTimer->start(100);
+            repeatTimer->start(60);
         }
     }
 }
