@@ -88,6 +88,7 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent)
     nextStage = 100;
     speed = 100;
     key = Qt::Key_0;
+    keytemp = key;
 
     status = STATUS_OFF;
     nextTetrisBox->updateNextTetris(tetris);
@@ -118,9 +119,12 @@ void mymain::keyPressEvent(QKeyEvent *event)
             if (tetris.moveToRight())
             {
                 tetrisBox->updateTetris(tetris);
-                if(event->key()!=key)
+                if(key == Qt::Key_0)
                 {
                     key = Qt::Key_D;
+                }
+                else if (key == Qt::Key_A) {
+                    keytemp = Qt::Key_D;
                 }
             }
         }
@@ -132,9 +136,12 @@ void mymain::keyPressEvent(QKeyEvent *event)
             if (tetris.moveToLeft())
             {
                 tetrisBox->updateTetris(tetris);
-                if(event->key()!=key)
+                if(key == Qt::Key_0)
                 {
                     key = Qt::Key_A;
+                }
+                else if (key == Qt::Key_D) {
+                    keytemp = Qt::Key_A;
                 }
             }
         }
@@ -341,7 +348,10 @@ void mymain::keyReleaseEvent(QKeyEvent *e)
     if((key == Qt::Key_D||key == Qt::Key_A)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A))
     {
         repeatTimer->stop();
-        key = Qt::Key_0;
+
+            key = keytemp;
+            keytemp = Qt::Key_0;
+
     }
 
 }
@@ -355,6 +365,7 @@ void mymain::onrepeatTimer()
             if (tetris.moveToRight())
             {
                 tetrisBox->updateTetris(tetris);
+                qDebug("moving right");
             }
         }
     }
@@ -364,7 +375,7 @@ void mymain::onrepeatTimer()
             if (tetris.moveToLeft())
             {
                 tetrisBox->updateTetris(tetris);
-                key = Qt::Key_A;
+                qDebug("moving left");
             }
         }
     }

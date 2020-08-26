@@ -47,6 +47,7 @@ private:
     int speed;
     int nextStage;
     Qt::Key key;
+    Qt::Key keytemp;
     QMessageBox *box1=new QMessageBox();
     int status;                     //游戏状态
     CTetromino tetris;                  //俄罗斯方块类对象
