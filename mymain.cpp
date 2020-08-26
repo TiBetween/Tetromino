@@ -4,7 +4,7 @@
 #include <QFontDatabase>
 #include "mainwindow.h"
 
-mymain::mymain(QWidget *parent) : QMainWindow(parent), repeatTimer(new QTimer(this))
+mymain::mymain(QWidget *parent) : QMainWindow(parent)
 {
 
     int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
@@ -93,7 +93,6 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent), repeatTimer(new QTimer(th
     setWindowTitle(tr("Tetromino - OFF"));
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
-    connect(repeatTimer, SIGNAL(timeout()), SLOT(onRepeatTimer()));
 }
 
 mymain::~mymain()
@@ -109,15 +108,53 @@ void mymain::setTimer(){
 
 void mymain::keyPressEvent(QKeyEvent *event)
 {
-    if  (event->key() == Qt::Key_A||event->key() == Qt::Key_D||event->key() == Qt::Key_S){
-        pressedKeys.append(static_cast<Qt::Key>(event->key()));
-        if(!repeatTimer->isActive())
+    if (event->key() == Qt::Key_D)
+    {
+        if (status == STATUS_ON)
         {
-            onRepeatTimer();
-            repeatTimer->start(55);
+            if (tetris.moveToRight())
+            {
+                tetrisBox->updateTetris(tetris);
+            }
         }
     }
-    if (event->key() == Qt::Key_W)
+    else if (event->key() == Qt::Key_A)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToLeft())
+            {
+                tetrisBox->updateTetris(tetris);
+
+            }
+        }
+    }
+
+    else if (event->key() == Qt::Key_S)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToBottom())
+            {
+                tetrisBox->updateTetris(tetris);
+                nextTetrisBox->updateNextTetris(tetris);
+                updateScore();
+            }
+            else
+            {
+                QMediaPlayer *effect = new QMediaPlayer;
+                effect->setMedia(QUrl::fromLocalFile("./res/sound/game_over.mp3"));
+                effect->play();
+                timer->stop();
+                QString str;
+                str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris.getScore());
+                QMessageBox::information(this, tr("Game Over1"), str);
+                status = STATUS_END;
+                setWindowTitle(tr("Tetromino - END"));
+            }
+        }
+    }
+    else if (event->key() == Qt::Key_W)
     {
         if (tetris.rotate())
         {
@@ -158,13 +195,6 @@ void mymain::keyPressEvent(QKeyEvent *event)
             timer->start(speed);
             status = STATUS_ON;
             setWindowTitle(tr("Game_Tetris - ON"));
-            foreach(Qt::Key key,pressedKeys)
-            {
-                if(key)
-                {
-                    pressedKeys.removeOne(key);
-                }
-            }
         }
         else if (status == STATUS_OFF)
         {
@@ -176,13 +206,6 @@ void mymain::keyPressEvent(QKeyEvent *event)
             nextStage = 100;
             status = STATUS_ON;
             setWindowTitle(tr("Game_Tetris - ON"));
-            foreach(Qt::Key key,pressedKeys)
-            {
-                if(key)
-                {
-                    pressedKeys.removeOne(key);
-                }
-            }
             timer->start(speed);
         }
         else if (status == STATUS_END)
@@ -194,13 +217,6 @@ void mymain::keyPressEvent(QKeyEvent *event)
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
             updateScore();
-            foreach(Qt::Key key,pressedKeys)
-            {
-                if(key)
-                {
-                    pressedKeys.removeOne(key);
-                }
-            }
             status = STATUS_ON;
             setWindowTitle(tr("Game_Tetris - ON"));
             timer->start(speed);
@@ -318,64 +334,6 @@ void mymain::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void mymain::keyReleaseEvent(QKeyEvent *event)
-{
-    if(repeatTimer->isActive() && pressedKeys.isEmpty())
-    {
-        repeatTimer->stop();
-    }
-    pressedKeys.removeAll(static_cast<Qt::Key>(event->key()));
-}
-
-void mymain::onRepeatTimer()
-{
-    if (pressedKeys.contains(Qt::Key_D))
-    {
-        if (status == STATUS_ON)
-        {
-            if (tetris.moveToRight())
-            {
-                tetrisBox->updateTetris(tetris);
-            }
-        }
-    }
-    if (pressedKeys.contains(Qt::Key_A))
-    {
-        if (status == STATUS_ON)
-        {
-            if (tetris.moveToLeft())
-            {
-                tetrisBox->updateTetris(tetris);
-
-            }
-        }
-    }
-
-    if (pressedKeys.contains(Qt::Key_S))
-    {
-        if (status == STATUS_ON)
-        {
-            if (tetris.moveToBottom())
-            {
-                tetrisBox->updateTetris(tetris);
-                nextTetrisBox->updateNextTetris(tetris);
-                updateScore();
-            }
-            else
-            {
-                QMediaPlayer *effect = new QMediaPlayer;
-                effect->setMedia(QUrl::fromLocalFile("./res/sound/game_over.mp3"));
-                effect->play();
-                timer->stop();
-                QString str;
-                str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris.getScore());
-                QMessageBox::information(this, tr("Game Over1"), str);
-                status = STATUS_END;
-                setWindowTitle(tr("Tetromino - END"));
-            }
-        }
-    }
-}
 
 void mymain::onTimer()
 {

@@ -3,7 +3,6 @@
         <file>sound/game_over.mp3</file>
         <file>sound/so_good.mp3</file>
         <file>img/background.jpg</file>
-        <file>img/background.png</file>
         <file>img/game_bg.png</file>
         <file>img/main_bg.png</file>
         <file>img/title.png</file>
@@ -15,5 +14,6 @@
         <file>img/block_pink.png</file>
         <file>img/block_purple.png</file>
         <file>img/block_yellow.png</file>
+        <file>img/next_bg.png</file>
     </qresource>
 </RCC>

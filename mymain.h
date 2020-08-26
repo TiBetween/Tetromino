@@ -34,15 +34,12 @@ public:
     explicit mymain(QWidget *parent = nullptr);
     ~mymain();
     void keyPressEvent(QKeyEvent *event);   //响应键盘事件
-    void keyReleaseEvent(QKeyEvent *event);
     void changeEvent(QEvent *event);        //窗口最小化后暂停
     void closeEvent(QCloseEvent *event);
     void updateScore();                     //更新分数的数据和显示
     void setTimer();                        //设置计时器，方便加速
 public slots:
     void onTimer();
-public slots:
-    void onRepeatTimer();
 private:
     int speed;
     int nextStage;
@@ -50,7 +47,6 @@ private:
     int status;                     //游戏状态
     CTetromino tetris;                  //俄罗斯方块类对象
     QTimer *timer;                  //计时器
-    QTimer *repeatTimer;
     TetrisBox *tetrisBox;           //游戏窗口
     NextTetrisBox *nextTetrisBox;   //“下一个”窗口
     QGridLayout *mainLayout;        //mainLayout
@@ -69,7 +65,6 @@ private:
     QLabel *scoreLabel;             //分数标签（用来显示分数）
     QLabel *diffTitleLabel;
     QLabel *diffLabel;
-    QList<Qt::Key> pressedKeys;
 
 signals:
 

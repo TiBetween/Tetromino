@@ -19,7 +19,9 @@ NextTetrisBox::NextTetrisBox(QWidget *parent) : QWidget(parent)
     int w = CTetromino::getNextWidth();
     int h = CTetromino::getNextHeight();
     setFixedSize(w, h);
-    setPalette(QPalette(Qt::black));
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Window,QBrush(QPixmap(":/res/img/next_bg.png")));
+    setPalette(pal);
     setAutoFillBackground(true);
 }
 
