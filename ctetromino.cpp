@@ -397,6 +397,18 @@ void CTetromino::createNextBlock()
         nextBlock.color = rand()%7;
         break;
     default:
+        nextBlock.x[0] = centerX - 1;
+        nextBlock.x[1] = centerX;
+        nextBlock.x[2] = centerX + 1;
+        nextBlock.x[3] = centerX + 2;
+        nextBlock.y[0] = -1;
+        nextBlock.y[1] = -1;
+        nextBlock.y[2] = -1;
+        nextBlock.y[3] = -1;
+        nextBlock.centerX = centerX;
+        nextBlock.centerY = -1;
+        nextBlock.ID = 1;
+        nextBlock.color = rand()%7;
         break;
     }
 }

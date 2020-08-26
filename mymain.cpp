@@ -87,12 +87,15 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent)
 
     nextStage = 100;
     speed = 100;
+    key = Qt::Key_0;
 
     status = STATUS_OFF;
     nextTetrisBox->updateNextTetris(tetris);
     setWindowTitle(tr("Tetromino - OFF"));
     timer = new QTimer(this);
+    repeatTimer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onrepeatTimer()));
 }
 
 mymain::~mymain()
@@ -115,6 +118,10 @@ void mymain::keyPressEvent(QKeyEvent *event)
             if (tetris.moveToRight())
             {
                 tetrisBox->updateTetris(tetris);
+                if(event->key()!=key)
+                {
+                    key = Qt::Key_D;
+                }
             }
         }
     }
@@ -125,7 +132,10 @@ void mymain::keyPressEvent(QKeyEvent *event)
             if (tetris.moveToLeft())
             {
                 tetrisBox->updateTetris(tetris);
-
+                if(event->key()!=key)
+                {
+                    key = Qt::Key_A;
+                }
             }
         }
     }
@@ -161,6 +171,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
             if (status == STATUS_ON)
             {
                 tetrisBox->updateTetris(tetris);
+                repeatTimer->start(100);
             }
         }
     }
@@ -231,7 +242,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
             setWindowTitle(tr("Tetromino - PAUSE"));
 
             box1->setWindowTitle("游戏暂停");
-            box1->setText("按下H键继续游戏");
+            box1->setText("按下Enter键继续游戏");
             box1->exec();
         }
     }
@@ -298,19 +309,14 @@ void mymain::keyPressEvent(QKeyEvent *event)
             {
 
                 status = STATUS_OFF;
-                QString str;
-                int score = tetris.getScore();
-                str += QString("%1").arg(score);
-                QMessageBox *myclose=new QMessageBox();
-                myclose->setWindowTitle("游戏结束");
-                myclose->setText("您的分数为:"+str);
+
 
                 tetris.clear();
                 tetrisBox->updateTetris(tetris);
                 nextTetrisBox->updateNextTetris(tetris);
                 updateScore();
                 setWindowTitle(tr("Tetromino - OFF"));
-                myclose->exec();
+
             }
 
         }
@@ -318,22 +324,51 @@ void mymain::keyPressEvent(QKeyEvent *event)
         else
         {
             status = STATUS_OFF;
-            QString str;
-            int score = tetris.getScore();
-            str += QString("%1").arg(score);
-            QMessageBox *myclose=new QMessageBox();
-            myclose->setWindowTitle("游戏结束");
+
 
             tetris.clear();
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
             updateScore();
             setWindowTitle(tr("Tetromino - OFF"));
-            myclose->exec();
+            setVisible(false);
         }
     }
 }
 
+void mymain::keyReleaseEvent(QKeyEvent *e)
+{
+    if((key == Qt::Key_D||key == Qt::Key_A)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A))
+    {
+        repeatTimer->stop();
+        key = Qt::Key_0;
+    }
+
+}
+
+void mymain::onrepeatTimer()
+{
+    if(key == Qt::Key_D)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToRight())
+            {
+                tetrisBox->updateTetris(tetris);
+            }
+        }
+    }
+    else if (key == Qt::Key_A) {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToLeft())
+            {
+                tetrisBox->updateTetris(tetris);
+                key = Qt::Key_A;
+            }
+        }
+    }
+}
 
 void mymain::onTimer()
 {
