@@ -43,6 +43,6 @@ private:
     Ui::MainWindow *ui;
     Form myform;
     Dialog quit;
-    mymain mymian;
+    mymain mymain;
 };
 #endif // MAINWINDOW_H

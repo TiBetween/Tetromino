@@ -39,6 +39,6 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
-    mymian.show();
+    mymain.show();
     this->showMinimized();
 }
