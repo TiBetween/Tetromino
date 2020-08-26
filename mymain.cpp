@@ -49,12 +49,9 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent), repeatTimer(new QTimer(th
 
 
     mainLayout = new QGridLayout;
-    //设置mainLayout的水平和横向的间隔为20
     mainLayout->setHorizontalSpacing(15);
     mainLayout->setVerticalSpacing(20);
-    //设置mainLayout居中
     mainLayout->setAlignment(Qt::AlignCenter);
-    //添加各个widget
 
     mainLayout->addWidget(nextTetrisLabel, 6, 3);
     mainLayout->addWidget(nextTetrisBox, 7, 3, 1, 2);
@@ -91,7 +88,6 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent), repeatTimer(new QTimer(th
     nextStage = 100;
     speed = 100;
 
-    //初始化
     status = STATUS_OFF;
     nextTetrisBox->updateNextTetris(tetris);
     setWindowTitle(tr("Tetromino - OFF"));
@@ -111,77 +107,19 @@ void mymain::setTimer(){
 
 
 
-//相应键盘事件
 void mymain::keyPressEvent(QKeyEvent *event)
 {
-    //W键-进行旋转并更新游戏窗口内容
     if (event->key() == Qt::Key_W)
     {
         if (tetris.rotate())
         {
-            //需要游戏状态为：正常进行
             if (status == STATUS_ON)
             {
                 tetrisBox->updateTetris(tetris);
             }
         }
     }
-//    //A键-将方块向左移动并更新游戏窗口内容
-//    else if (event->key() == Qt::Key_A)
-//    {
-//        //需要游戏状态为：正常进行
-//        if (status == STATUS_ON)
-//        {
-//            if (tetris.moveToLeft())
-//            {
-//                tetrisBox->updateTetris(tetris);
 
-//            }
-//        }
-//    }
-
-//    //S键-将方块向下移动并更新游戏窗口内容
-//    else if (event->key() == Qt::Key_S)
-//    {
-//        //需要游戏状态：正常进行
-//        if (status == STATUS_ON)
-//        {
-//            if (tetris.moveToBottom())
-//            {
-//                tetrisBox->updateTetris(tetris);
-//                nextTetrisBox->updateNextTetris(tetris);
-//                updateScore();
-//            }
-//            else    //游戏结束
-//            {
-//                QMediaPlayer *effect = new QMediaPlayer;
-//                effect->setMedia(QUrl::fromLocalFile("C:\\Users\\10852\\Desktop\\WorkSpace\\Qt\\Tetromino\\game_over.mp3"));
-//                effect->play();
-//                //计时器停止
-//                timer->stop();
-//                //输出结束提示
-//                QString str;
-//                str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris.getScore());
-//                QMessageBox::information(this, tr("Game Over1"), str);
-//                //更改游戏状态为：游戏结束
-//                status = STATUS_END;
-//                setWindowTitle(tr("Tetromino - END"));
-//            }
-//        }
-//    }
-
-//    //D键-将方块向右移动并更新游戏窗口内容
-//    else if (event->key() == Qt::Key_D)
-//    {
-//        //需要游戏状态为：正常进行
-//        if (status == STATUS_ON)
-//        {
-//            if (tetris.moveToRight())
-//            {
-//                tetrisBox->updateTetris(tetris);
-//            }
-//        }
-//    }
     else if (event->key() == Qt::Key_Space) {
         if(status == STATUS_ON)
         {
@@ -191,28 +129,20 @@ void mymain::keyPressEvent(QKeyEvent *event)
             }
             else
             {
-                //                QMediaPlayer *effect = new QMediaPlayer;
-                //                effect->setMedia(QUrl::fromLocalFile("C:\\Users\\10852\\Desktop\\WorkSpace\\Qt\\Tetromino\\game_over.mp3"));
-                //                effect->play();
-                //计时器停止
+                QMediaPlayer *effect = new QMediaPlayer;
+                effect->setMedia(QUrl::fromLocalFile("./res/sound/so_good.mp3"));
+                effect->play();
                 timer->stop();
-                //输出结束提示
                 QString str;
                 str +=  QString("Game Over2!\nYour Score is: %1!").arg(tetris.getScore());
                 QMessageBox::information(this, tr("Game Over2"), str);
-                //更改游戏状态为：游戏结束
                 status = STATUS_END;
                 setWindowTitle(tr("Tetromino - END"));
 
             }
         }
     }
-    //Enter键-开始游戏
-    //不同状态的相应：
-    //之前状态    之后状态
-    //游戏暂停 -> 正常进行
-    //还未开始 -> 正常进行
-    //游戏结束 -> 正常进行
+
     else if (event->key() == Qt::Key_Enter||event->key() == Qt::Key_Return)
     {
         if (status == STATUS_PAUSE)
@@ -230,7 +160,6 @@ void mymain::keyPressEvent(QKeyEvent *event)
         }
         else if (status == STATUS_OFF)
         {
-            //初始化窗口视图
             tetris.createBlock();
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
@@ -250,7 +179,6 @@ void mymain::keyPressEvent(QKeyEvent *event)
         }
         else if (status == STATUS_END)
         {
-            //初始化tetris
             tetris.clear();
             tetris.createBlock();
             speed = 500;
@@ -270,10 +198,8 @@ void mymain::keyPressEvent(QKeyEvent *event)
             timer->start(speed);
         }
     }
-    //P键-游戏暂停
     else if (event->key() == Qt::Key_P)
     {
-        //需要游戏状态为：正常进行
         if (status == STATUS_ON)
         {
             timer->stop();
@@ -285,7 +211,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
             box1->exec();
         }
     }
-    //R键-重新开始游戏
+
     else if (event->key() == Qt::Key_R)
     {
         if(status==STATUS_ON||status==STATUS_PAUSE)
@@ -327,7 +253,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
         }
 
     }
-    //ESC键-关闭游戏
+
     else if (event->key() == Qt::Key_Escape)
     {
         timer->stop();
@@ -346,7 +272,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
             }
             else
             {
-                //            record();
+
                 status = STATUS_OFF;
                 QString str;
                 int score = tetris.getScore();
@@ -354,7 +280,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
                 QMessageBox *myclose=new QMessageBox();
                 myclose->setWindowTitle("游戏结束");
                 myclose->setText("您的分数为:"+str);
-                //            record();
+
                 tetris.clear();
                 tetrisBox->updateTetris(tetris);
                 nextTetrisBox->updateNextTetris(tetris);
@@ -367,7 +293,6 @@ void mymain::keyPressEvent(QKeyEvent *event)
 
         else
         {
-            //            record();
             status = STATUS_OFF;
             QString str;
             int score = tetris.getScore();
@@ -375,7 +300,6 @@ void mymain::keyPressEvent(QKeyEvent *event)
             QMessageBox *myclose=new QMessageBox();
             myclose->setWindowTitle("游戏结束");
 
-            //            record();
             tetris.clear();
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
@@ -405,11 +329,8 @@ void mymain::keyReleaseEvent(QKeyEvent *event)
 
 void mymain::onRepeatTimer()
 {
-
-        //A键-将方块向左移动并更新游戏窗口内容
         if (pressedKeys.contains(Qt::Key_A))
         {
-            //需要游戏状态为：正常进行
             if (status == STATUS_ON)
             {
                 if (tetris.moveToLeft())
@@ -419,11 +340,8 @@ void mymain::onRepeatTimer()
                 }
             }
         }
-
-        //S键-将方块向下移动并更新游戏窗口内容
         if (pressedKeys.contains(Qt::Key_S))
         {
-            //需要游戏状态：正常进行
             if (status == STATUS_ON)
             {
                 if (tetris.moveToBottom())
@@ -432,28 +350,22 @@ void mymain::onRepeatTimer()
                     nextTetrisBox->updateNextTetris(tetris);
                     updateScore();
                 }
-                else    //游戏结束
+                else
                 {
                     QMediaPlayer *effect = new QMediaPlayer;
-                    effect->setMedia(QUrl::fromLocalFile("C:\\Users\\10852\\Desktop\\WorkSpace\\Qt\\Tetromino\\game_over.mp3"));
+                    effect->setMedia(QUrl::fromLocalFile("./res/sound/game_over.mp3"));
                     effect->play();
-                    //计时器停止
                     timer->stop();
-                    //输出结束提示
                     QString str;
                     str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris.getScore());
                     QMessageBox::information(this, tr("Game Over1"), str);
-                    //更改游戏状态为：游戏结束
                     status = STATUS_END;
                     setWindowTitle(tr("Tetromino - END"));
                 }
             }
         }
-
-        //D键-将方块向右移动并更新游戏窗口内容
         if (pressedKeys.contains(Qt::Key_D))
         {
-            //需要游戏状态为：正常进行
             if (status == STATUS_ON)
             {
                 if (tetris.moveToRight())
@@ -481,7 +393,7 @@ void mymain::onTimer()
         status = STATUS_END;
         setWindowTitle(tr("Tetromino - END"));
         QMediaPlayer *effect = new QMediaPlayer;
-        effect->setMedia(QUrl::fromLocalFile("C:\\Users\\10852\\Desktop\\WorkSpace\\Qt\\Tetromino\\game_over.mp3"));
+        effect->setMedia(QUrl::fromLocalFile("./res/sound/game_over.mp3"));
         effect->play();
     }
 }
@@ -512,8 +424,6 @@ void mymain::updateScore()
     diffLabel->setStyleSheet("QLabel{color:white;}");
 }
 
-
-//若窗口最小化就停止计时器
 void mymain::changeEvent(QEvent *event)
 {
     if (event->type() != QEvent::WindowStateChange)

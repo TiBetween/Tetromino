@@ -110,7 +110,6 @@ void TetrisBox::paintEvent(QPaintEvent *event)
         int y = block.y[i];
         int x1 = x * WIDTH + x * INTERVAL;
         int y1 = y * HEIGHT + y * INTERVAL;
-        qDebug("im here");
         painter.drawPixmap(x1 + 7, y1 + 8, WIDTH, HEIGHT, pix);
     }
 }
